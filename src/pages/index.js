@@ -4,11 +4,12 @@ import Hero from "../../components/hero";
 import Head from "next/head";
 import Card from "../../components/card";
 const inter = Inter({ subsets: ["latin"] });
-
+import coffeestores from "../../data/coffee-stores.json";
 export default function Home() {
   const handleOnClick = () => {
     console.log("Hello WOrld");
   };
+  console.log(coffeestores);
   return (
     <div>
       <Head>
@@ -21,7 +22,17 @@ export default function Home() {
           handleClick={handleOnClick}
         />
       </section>
-      <Card name="DarkHouse Coffee" href="/coffee-store/darkhorse-coffee" imgUrl="/static/card.png"/>
+      <div className="flex gap-8 flex-wrap my-8">
+        {coffeestores.map((coffeestore) => {
+          return (
+            <Card
+              name={coffeestore.name}
+              href={`/coffee-store/${coffeestore.id}`}
+              imgUrl={`/static/${coffeestore.image}`}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 }

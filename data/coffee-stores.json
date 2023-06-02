@@ -1,0 +1,14 @@
+[
+    {
+        "id": 0,
+        "name": "Strange Love Coffee",
+        "image": "card.png",
+        "address": "Addo Road"
+    },
+    {
+        "id": 1,
+        "name": "Affection Love Coffee",
+        "image": "card.png",
+        "address": "Addo Road"
+    }
+]

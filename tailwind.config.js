@@ -15,7 +15,8 @@ module.exports = {
       },
       colors: {
         primary: "rgba(34, 21, 24, 1)",
-        secondary: "rgba(84, 55, 43, 1)"
+        secondary: "rgba(84, 55, 43, 1)",
+        cardText: " rgba(247, 225, 188, 0.3)"
       },
       fontFamily: {
         Dancing: "'Dancing Script', 'Helvetica Neue', cursive"
