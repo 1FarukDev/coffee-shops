@@ -4,12 +4,12 @@ import Hero from "../../components/hero";
 import Head from "next/head";
 import Card from "../../components/card";
 const inter = Inter({ subsets: ["latin"] });
-import coffeestores from "../../data/coffee-stores.json";
-export default function Home() {
+import coffeestoresData from "../../data/coffee-stores.json";
+export default function Home(props) {
   const handleOnClick = () => {
     console.log("Hello WOrld");
   };
-  console.log(coffeestores);
+  console.log("props", props);
   return (
     <div>
       <Head>
@@ -22,17 +22,30 @@ export default function Home() {
           handleClick={handleOnClick}
         />
       </section>
-      <div className="flex gap-8 flex-wrap my-8">
-        {coffeestores.map((coffeestore) => {
-          return (
-            <Card
-              name={coffeestore.name}
-              href={`/coffee-store/${coffeestore.id}`}
-              imgUrl={`/static/${coffeestore.image}`}
-            />
-          );
-        })}
-      </div>
+      {props.coffeestores.length > 0 && (
+        <>
+          <h2 className="text-3xl mt-8 text-white">Toronto Stores</h2>
+          <div className="flex gap-8 flex-wrap ">
+            {props.coffeestores.map((coffeestore) => {
+              return (
+                <Card
+                  key={coffeestore.id}
+                  name={coffeestore.name}
+                  href={`/coffee-store/${coffeestore.id}`}
+                  imgUrl={`/static/${coffeestore.image}`}
+                />
+              );
+            })}
+          </div>
+        </>
+      )}
     </div>
   );
+}
+export async function getStaticProps(context) {
+  return {
+    props: {
+      coffeestores: coffeestoresData,
+    },
+  };
 }
