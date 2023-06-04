@@ -43,6 +43,19 @@ export default function Home(props) {
   );
 }
 export async function getStaticProps(context) {
+  const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: 'fsq3JvOwFEKgNSKuR6oaZrFntfaqXKW0TnRg/gGxqK9quno='
+    }
+  };
+  
+  fetch('https://api.foursquare.com/v3/places/search?ll=41.8781%2C-87.6298&categories=13035', options)
+    .then(response => response.json())
+    .then(response => console.log(response))
+    .catch(err => console.error(err));
+  
   return {
     props: {
       coffeestores: coffeestoresData,
