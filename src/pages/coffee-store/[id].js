@@ -4,6 +4,7 @@ import Link from "next/link";
 import coffeestoreData from "../../../data/coffee-stores.json";
 import Head from "next/head";
 import Image from "next/image";
+import { fetchCoffeeStores } from "../../../lib/coffee-store";
 function CoffeeStore(props) {
   const { name, address, image } = props.coffeeStore;
   // console.log(props, "props");
@@ -34,19 +35,22 @@ function CoffeeStore(props) {
   );
 }
 
-export function getStaticProps(staticProps) {
+export async function getStaticProps(staticProps) {
   const params = staticProps.params;
+  const coffeestores = await fetchCoffeeStores();
+  console.log("props", coffeestores);
   return {
     props: {
-      coffeeStore: coffeestoreData.find((coffeeStore) => {
+      coffeeStore: coffeestores.results.find((coffeeStore) => {
         return coffeeStore.id.toString() === params.id;
       }),
     },
   };
 }
 
-export function getStaticPaths() {
-  const paths = coffeestoreData.map((coffeeStore) => {
+export async function getStaticPaths() {
+  const coffeestores = await fetchCoffeeStores();
+  const paths = coffeestores.results.map((coffeeStore) => {
     return {
       params: {
         id: coffeeStore.id.toString(),

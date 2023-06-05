@@ -4,7 +4,7 @@ import Hero from "../../components/hero";
 import Head from "next/head";
 import Card from "../../components/card";
 const inter = Inter({ subsets: ["latin"] });
-import coffeestoresData from "../../data/coffee-stores.json";
+import { fetchCoffeeStores } from "../../lib/coffee-store";
 export default function Home(props) {
   const handleOnClick = () => {
     console.log("Hello WOrld");
@@ -32,7 +32,7 @@ export default function Home(props) {
                   key={coffeestore.id}
                   name={coffeestore.name}
                   href={`/coffee-store/${coffeestore.id}`}
-                  imgUrl={`/static/${coffeestore.image}`}
+                  imgUrl={coffeestore.image || "/static/card.png"}
                 />
               );
             })}
@@ -43,22 +43,10 @@ export default function Home(props) {
   );
 }
 export async function getStaticProps(context) {
-  const options = {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-      Authorization: 'fsq3JvOwFEKgNSKuR6oaZrFntfaqXKW0TnRg/gGxqK9quno='
-    }
-  };
-  
-  fetch('https://api.foursquare.com/v3/places/search?ll=41.8781%2C-87.6298&categories=13035', options)
-    .then(response => response.json())
-    .then(response => console.log(response))
-    .catch(err => console.error(err));
-  
+  const coffeestores = await fetchCoffeeStores();
   return {
     props: {
-      coffeestores: coffeestoresData,
+      coffeestores: coffeestores,
     },
   };
 }
