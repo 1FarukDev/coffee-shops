@@ -31,7 +31,8 @@ export default function Home(props) {
                 <Card
                   key={coffeestore.id}
                   name={coffeestore.name}
-                  href={`/coffee-store/${coffeestore.id}`}
+                  // id={coffeestore.id}
+                  href={`/coffee-store/${coffeestore.fsq_id}`}
                   imgUrl={coffeestore.image || "/static/card.png"}
                 />
               );

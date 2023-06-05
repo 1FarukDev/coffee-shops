@@ -41,8 +41,8 @@ export async function getStaticProps(staticProps) {
   console.log("props", coffeestores);
   return {
     props: {
-      coffeeStore: coffeestores.results.find((coffeeStore) => {
-        return coffeeStore.id.toString() === params.id;
+      coffeeStore: coffeestores.find((coffeeStore) => {
+        return coffeeStore.fsq_id.toString() === params.id;
       }),
     },
   };
@@ -50,10 +50,11 @@ export async function getStaticProps(staticProps) {
 
 export async function getStaticPaths() {
   const coffeestores = await fetchCoffeeStores();
-  const paths = coffeestores.results.map((coffeeStore) => {
+  console.log(fetchCoffeeStores);
+  const paths = coffeestores.map((coffeeStore) => {
     return {
       params: {
-        id: coffeeStore.id.toString(),
+        id: coffeeStore.fsq_id.toString(),
       },
     };
   });
@@ -62,4 +63,19 @@ export async function getStaticPaths() {
     fallback: false,
   };
 }
+
+// export async function getStaticProps(context) {
+//   // console.log(context);
+
+//   const { params } = context;
+//   const response = await fetchCoffeeStores();
+//   const coffeeStore = await response.json();
+
+//   return {
+//     props: {
+//       // property: data,
+//       coffeeStore,
+//     },
+//   };
+// }
 export default CoffeeStore;

@@ -10,6 +10,7 @@ function Card(props) {
           <Image src={props.imgUrl} width={260} height={160} alt="Card Image"/>
           <h2 className="text-white flex justify-center bg-cardText font-mono">
             {props.name}
+            {/* {props.id} */}
           </h2>
         </section>
       </Link>
