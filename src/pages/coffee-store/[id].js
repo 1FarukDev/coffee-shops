@@ -6,7 +6,8 @@ import Head from "next/head";
 import Image from "next/image";
 import { fetchCoffeeStores } from "../../../lib/coffee-store";
 function CoffeeStore(props) {
-  const { name, address, image } = props.coffeeStore;
+  const { name, address, imgUrl, location } = props.coffeeStore;
+  console.log(props.coffeeStore);
   // console.log(props, "props");
   const router = useRouter();
   return (
@@ -14,20 +15,21 @@ function CoffeeStore(props) {
       <Head>
         <title>{name}</title>
       </Head>
-      <div className="text-white">
-        <Link href="/">Back To Home</Link>
+      <div className="text-white ">
+        <Link href="/" className="font-dancing">← Back to home</Link>
         <section className="lg:flex lg:flex-row  w-1/2 m-auto my-auto h-screen lg:justify-between align-center lg:items-center flex-col justify-center ">
-          <div>
+          <div className="">
             <Image
-              src={`/static/${image}`}
+              src={imgUrl || "/static/card.png"}
               width={300}
-              height={300}
+              height={200}
               alt="Coffee Image"
             />
           </div>
           <div>
-            <p> {name}</p>
-            <p> {address}</p>
+            <p>{name}</p>
+            <p>{address}</p>
+            <p>{location.address}</p>
           </div>
         </section>
       </div>
@@ -38,7 +40,6 @@ function CoffeeStore(props) {
 export async function getStaticProps(staticProps) {
   const params = staticProps.params;
   const coffeestores = await fetchCoffeeStores();
-  console.log("props", coffeestores);
   return {
     props: {
       coffeeStore: coffeestores.find((coffeeStore) => {

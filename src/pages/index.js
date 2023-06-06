@@ -9,7 +9,7 @@ export default function Home(props) {
   const handleOnClick = () => {
     console.log("Hello WOrld");
   };
-  console.log("props", props);
+  // console.log("props", props);
   return (
     <div>
       <Head>
@@ -24,17 +24,21 @@ export default function Home(props) {
       </section>
       {props.coffeestores.length > 0 && (
         <>
-          <h2 className="text-3xl mt-8 text-white">Toronto Stores</h2>
-          <div className="flex gap-8 flex-wrap ">
+          <h2 className="text-3xl mt-8 text-white flex justify-center">Toronto Stores</h2>
+          <div className="lg:flex justify-center gap-4  lg:flex-wrap  grid grid-cols-2 px-4">
             {props.coffeestores.map((coffeestore) => {
               return (
-                <Card
-                  key={coffeestore.id}
+               <div className="">
+                 <Card
+                  key={coffeestore.fsq_id}
                   name={coffeestore.name}
                   // id={coffeestore.id}
                   href={`/coffee-store/${coffeestore.fsq_id}`}
-                  imgUrl={coffeestore.image || "/static/card.png"}
+                  imgUrl={coffeestore.imgUrl || "/static/card.png"}
+                  location={coffeestore.location.address}
+                  
                 />
+               </div>
               );
             })}
           </div>
