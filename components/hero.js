@@ -20,6 +20,7 @@ export default function Hero(props) {
           >
             {props.buttonText}
           </button>
+          {/* <p className="text-white"></p> */}
         </div>
         <div className="">
           <Image src={HeroImg} width={700} height={500} alt="Hero Image" />

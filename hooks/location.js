@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 
 function useTrackLocation() {
-  const [latLong, setLatLong] = useState("");
+  const [ll, setLl] = useState("");
   const [locationErrorMsg, setLocationErrorMsg] = useState("");
   const [isFindingLocation, setIsFindingLocation] = useState(false);
   const success = (position) => {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
-    setLatLong(`${latitude},${longitude}`);
+    setLl(`${latitude},${longitude}`);
     setLocationErrorMsg("");
     setIsFindingLocation(false)
   };
@@ -28,7 +28,7 @@ function useTrackLocation() {
     }
   };
   return {
-    latLong,
+    ll,
     handleTrackLocation,
     locationErrorMsg,
     isFindingLocation,
