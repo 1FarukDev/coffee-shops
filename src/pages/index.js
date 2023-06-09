@@ -16,28 +16,34 @@ export default function Home(props) {
     handleTrackLocation();
   };
 
-  // useEffect(() => {
-  //   async function setCoffeeStoresByLocation() {
-  //     if (ll) {
-  //       try {
-  //         const fetchedCoffeeStores = await fetchCoffeeStores(ll);
-  //         setCoffeeStores(fetchedCoffeeStores)
-  //         // console.log({ fetchedCoffeeStores });
-  //       } catch (error) {
-  //         //set error
-  //         console.error({ error });
-  //       }
-  //     }
-  //   }
-  //   // console.log(setCoffeeStoresByLocation);
-  // }, [ll]);
+  useEffect(() => {
+    async function field() {
+      if (ll) {
+        const searchParams = new URLSearchParams({
+          query: "coffee",
+          ll: `${ll}`,
+          open_now: "true",
+          sort: "DISTANCE",
+        });
 
-  useEffect(() =>{
-    if(ll){
-      const fetchedCoffeeStores = fetchCoffeeStores(ll);
-      console.log(fetchedCoffeeStores);
+        const options = {
+          method: "GET",
+          headers: {
+            accept: "application/json",
+            Authorization: process.env.NEXT_PUBLIC_authorisation,
+          },
+        };
+        const response = await fetch(
+          `https://api.foursquare.com/v3/places/search?${searchParams}`,
+          options
+        );
+
+        const data = await response.json();
+        console.log(data);
+      }
     }
-  })
+    field();
+  }, [ll]);
 
   return (
     <div>
