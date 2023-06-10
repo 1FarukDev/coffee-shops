@@ -7,6 +7,23 @@ const inter = Inter({ subsets: ["latin"] });
 import { fetchCoffeeStores } from "../../lib/coffee-store";
 import useTrackLocation from "../../hooks/location";
 import { useEffect, useState } from "react";
+import { createApi } from "unsplash-js";
+
+// on your node server
+const serverApi = createApi({
+  accessKey: process.env.NEXT_PUBLIC_unsplash,
+  //...other fetch options
+});
+
+const coffeeImage = async () => {
+  const photos = await serverApi.search.getPhotos({
+    query: "coffee shop",
+    page: 1,
+    perPage: 30,
+  });
+  const unSplashResults = photos.response.results;
+  return unSplashResults.map((result) => result.urls["small"]);
+};
 export default function Home(props) {
   const [coffeeStores, setCoffeeStores] = useState("");
   const { handleTrackLocation, ll, locationErrorMsg, isFindingLocation } =
@@ -19,6 +36,7 @@ export default function Home(props) {
   };
 
   async function field() {
+    const photos = await coffeeImage();
     if (ll) {
       const searchParams = new URLSearchParams({
         query: "coffee",
@@ -40,7 +58,12 @@ export default function Home(props) {
       );
       const coffeeStores = await response.json();
       // console.log("coffeeStores", coffeeStores.results);
-      return coffeeStores.results;
+      return coffeeStores.results.map((result, idx) => {
+        return {
+          ...result,
+          imgUrl: photos[idx],
+        };
+      });
     }
   }
   useEffect(() => {
@@ -53,11 +76,9 @@ export default function Home(props) {
         console.log({ error });
       });
   }, [ll]);
-console.log({coffeeStores});
+  console.log({ coffeeStores });
   return (
-  
     <div>
-      
       <Head>
         <title>Coffee Connoisseur</title>
       </Head>
@@ -72,7 +93,7 @@ console.log({coffeeStores});
       {coffeeStores && (
         <>
           <h2 className="text-3xl mt-8 text-white flex justify-center">
-            Toronto 
+            Coffee Stores Near You
           </h2>
           <div className="lg:grid justify-center gap-4  lg:grid-cols-3  lg:w-4/6 m-auto   grid grid-cols-2 px-4">
             {coffeeStores.map((coffeestore) => {
