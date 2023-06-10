@@ -15,10 +15,9 @@ function useTrackLocation() {
     setIsFindingLocation(false);
     setLocationErrorMsg("Unable to retrieve your location");
   };
+  
   const handleTrackLocation = () => {
     setIsFindingLocation(true);
-
-
     if (!navigator.geolocation) {
       setLocationErrorMsg("Geolocation is not supported by your browser");
       setIsFindingLocation(false);

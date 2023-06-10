@@ -8,45 +8,56 @@ import { fetchCoffeeStores } from "../../lib/coffee-store";
 import useTrackLocation from "../../hooks/location";
 import { useEffect, useState } from "react";
 export default function Home(props) {
+  const [coffeeStores, setCoffeeStores] = useState("");
   const { handleTrackLocation, ll, locationErrorMsg, isFindingLocation } =
     useTrackLocation();
-  const [coffeeStores, setCoffeeStores] = useState("");
+
+  // console.log({coffeeStores});
   console.log({ ll, locationErrorMsg });
   const handleOnClick = () => {
     handleTrackLocation();
   };
 
-  useEffect(() => {
-    async function field() {
-      if (ll) {
-        const searchParams = new URLSearchParams({
-          query: "coffee",
-          ll: `${ll}`,
-          open_now: "true",
-          sort: "DISTANCE",
-        });
+  async function field() {
+    if (ll) {
+      const searchParams = new URLSearchParams({
+        query: "coffee",
+        ll: `${ll}`,
+        open_now: "false",
+        sort: "DISTANCE",
+      });
 
-        const options = {
-          method: "GET",
-          headers: {
-            accept: "application/json",
-            Authorization: process.env.NEXT_PUBLIC_authorisation,
-          },
-        };
-        const response = await fetch(
-          `https://api.foursquare.com/v3/places/search?${searchParams}`,
-          options
-        );
-
-        const data = await response.json();
-        console.log(data);
-      }
+      const options = {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          Authorization: process.env.NEXT_PUBLIC_authorisation,
+        },
+      };
+      const response = await fetch(
+        `https://api.foursquare.com/v3/places/search?${searchParams}`,
+        options
+      );
+      const coffeeStores = await response.json();
+      // console.log("coffeeStores", coffeeStores.results);
+      return coffeeStores.results;
     }
-    field();
+  }
+  useEffect(() => {
+    field()
+      .then((responseData) => {
+        setCoffeeStores(responseData);
+        // console.log("setCoffeeStores", setCoffeeStores);
+      })
+      .catch((error) => {
+        console.log({ error });
+      });
   }, [ll]);
-
+console.log({coffeeStores});
   return (
+  
     <div>
+      
       <Head>
         <title>Coffee Connoisseur</title>
       </Head>
@@ -57,6 +68,30 @@ export default function Home(props) {
           handleClick={handleOnClick}
         />
       </section>
+
+      {coffeeStores && (
+        <>
+          <h2 className="text-3xl mt-8 text-white flex justify-center">
+            Toronto 
+          </h2>
+          <div className="lg:grid justify-center gap-4  lg:grid-cols-3  lg:w-4/6 m-auto   grid grid-cols-2 px-4">
+            {coffeeStores.map((coffeestore) => {
+              return (
+                <div className="">
+                  <Card
+                    key={coffeestore.fsq_id}
+                    name={coffeestore.name}
+                    // id={coffeestore.id}
+                    href={`/coffee-store/${coffeestore.fsq_id}`}
+                    imgUrl={coffeestore.imgUrl || "/static/card.png"}
+                    location={coffeestore.location.address}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
       {props.coffeestores.length > 0 && (
         <>
           <h2 className="text-3xl mt-8 text-white flex justify-center">
@@ -80,29 +115,19 @@ export default function Home(props) {
           </div>
         </>
       )}
-      {coffeeStores.length > 0 && (
-        <>
-          <h2 className="text-3xl mt-8 text-white flex justify-center">
-            Stores near me
-          </h2>
-          <div className="lg:grid justify-center gap-4  lg:grid-cols-3  lg:w-4/6 m-auto   grid grid-cols-2 px-4">
-            {coffeeStores.map((coffeestore) => {
-              return (
-                <div className="">
-                  <Card
-                    key={coffeestore.fsq_id}
-                    name={coffeestore.name}
-                    // id={coffeestore.id}
-                    href={`/coffee-store/${coffeestore.fsq_id}`}
-                    imgUrl={coffeestore.imgUrl || "/static/card.png"}
-                    location={coffeestore.location.address}
-                  />
-                </div>
-              );
-            })}
-          </div>
+      {/* {
+        coffeeStores.results.length > 0 && <>
+        {
+          coffeeStores.results.map((coffeestore) => {
+            return(
+              <Card 
+              name={coffeestore.name}
+              />
+            )
+          })
+        }
         </>
-      )}
+      } */}
     </div>
   );
 }
