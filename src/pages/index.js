@@ -113,7 +113,7 @@ export default function Home(props) {
           </div>
         </>
       )}
-      {props.coffeestores.length > 0 && (
+      {!ll && props.coffeestores.length > 0 && (
         <>
           <h2 className="text-3xl mt-8 text-white flex justify-center">
             Toronto Stores
