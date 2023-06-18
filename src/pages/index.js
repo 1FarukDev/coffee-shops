@@ -93,7 +93,7 @@ export default function Home(props) {
       {coffeeStores && (
         <>
           <h2 className="text-3xl mt-8 text-white flex justify-center">
-            Coffee Stores Near You
+            Coffee Stores Near Your
           </h2>
           <div className="lg:grid justify-center gap-4  lg:grid-cols-3  lg:w-4/6 m-auto   grid grid-cols-2 px-4">
             {coffeeStores.map((coffeestore) => {
