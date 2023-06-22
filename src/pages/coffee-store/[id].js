@@ -37,25 +37,53 @@ function CoffeeStore(props) {
   );
 }
 
+// export async function getStaticProps(staticProps) {
+//   const params = staticProps.params;
+//   const coffeestores = await fetchCoffeeStores();
+//   return {
+//     props: {
+//       coffeeStore: coffeestores.find((coffeeStore) => {
+//         return coffeeStore.fsq_id.toString() === params.id;
+//       }),
+//     },
+//   };
+// }
+
+// export async function getStaticPaths() {
+//   const coffeestores = await fetchCoffeeStores();
+//   console.log(fetchCoffeeStores);
+//   const paths = coffeestores.map((coffeeStore) => {
+//     return {
+//       params: {
+//         id: coffeeStore.fsq_id.toString(),
+//       },
+//     };
+//   });
+//   return {
+//     paths,
+//     fallback: true,
+//   };
+// }
 export async function getStaticProps(staticProps) {
   const params = staticProps.params;
-  const coffeestores = await fetchCoffeeStores();
+
+  const coffeeStores = await fetchCoffeeStores();
+  const findCoffeeStoreById = coffeeStores.find((coffeeStore) => {
+    return coffeeStore.id.toString() === params.id; //dynamic id
+  });
   return {
     props: {
-      coffeeStore: coffeestores.find((coffeeStore) => {
-        return coffeeStore.fsq_id.toString() === params.id;
-      }),
+      coffeeStore: findCoffeeStoreById ? findCoffeeStoreById : {},
     },
   };
 }
 
 export async function getStaticPaths() {
-  const coffeestores = await fetchCoffeeStores();
-  console.log(fetchCoffeeStores);
-  const paths = coffeestores.map((coffeeStore) => {
+  const coffeeStores = await fetchCoffeeStores();
+  const paths = coffeeStores.map((coffeeStore) => {
     return {
       params: {
-        id: coffeeStore.fsq_id.toString(),
+        id: coffeeStore.id.toString(),
       },
     };
   });
