@@ -70,7 +70,7 @@ export default function Home(props) {
     field()
       .then((responseData) => {
         setCoffeeStores(responseData);
-        // console.log("setCoffeeStores", setCoffeeStores);
+        console.log("setCoffeeStores", setCoffeeStores);
       })
       .catch((error) => {
         console.log({ error });

@@ -7,8 +7,8 @@ import Image from "next/image";
 import { fetchCoffeeStores } from "../../../lib/coffee-store";
 function CoffeeStore(props) {
   const { name, address, imgUrl, location } = props.coffeeStore;
-  console.log(props.coffeeStore);
-  // console.log(props, "props");
+  // console.log(props.coffeeStore);
+  console.log(props, "props");
   const router = useRouter();
   return (
     <>
@@ -69,7 +69,7 @@ export async function getStaticProps(staticProps) {
 
   const coffeeStores = await fetchCoffeeStores();
   const findCoffeeStoreById = coffeeStores.find((coffeeStore) => {
-    return coffeeStore.id.toString() === params.id; //dynamic id
+    return coffeeStore.fsq_id.toString() === params.id; //dynamic id
   });
   return {
     props: {
@@ -83,7 +83,7 @@ export async function getStaticPaths() {
   const paths = coffeeStores.map((coffeeStore) => {
     return {
       params: {
-        id: coffeeStore.id.toString(),
+        id: coffeeStore.fsq_id.toString(),
       },
     };
   });
